@@ -30,7 +30,7 @@ app.post('/api/events', async (req, res) => {
 
     // Formatted message according to specifications
     let notificationText = `Event received: ${event}`
-    if (event === 'birthday_gift_claim_clicked') {
+    if (event === 'gift_claim_clicked' || event === 'birthday_gift_claim_clicked') {
       notificationText = "🎁 She just clicked 'Claim your Gift'."
     }
 

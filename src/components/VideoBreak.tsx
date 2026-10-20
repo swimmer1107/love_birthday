@@ -12,6 +12,8 @@ export const VideoBreak: React.FC = () => {
         playsInline
         src={MEMORY_VIDEO}
       />
+      {/* Very subtle dark cinematic vignette overlay */}
+      <div className="absolute inset-0 bg-black/15 pointer-events-none" aria-hidden="true" />
     </section>
   )
 }

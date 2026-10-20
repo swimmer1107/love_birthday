@@ -1,7 +1,8 @@
 /**
  * Birthday Website Configuration
  *
- * Customize all content, images, videos, and texts here without modifying UI components.
+ * Customize all content, images, videos, texts, and links here
+ * without modifying UI components.
  */
 
 export interface PersonalMessageItem {
@@ -79,16 +80,27 @@ export const MEMORY_CAPTIONS: MemoryItem[] = [
 ]
 
 export const BIRTHDAY_MESSAGE = {
-  title: `Happy Birthday, ${HER_NAME} ❤️`,
+  title: `Happy Birthday, ${HER_NAME}. ♡`,
   paragraphs: [
-    "I hope this year gives you a lot of reasons to smile.",
-    "I hope you get to do the things you've been waiting for.",
-    "And I hope you keep being exactly the person you are.",
-    "Because honestly, I kind of like that person.",
+    "I hope this year gives you a thousand reasons to smile, a few beautiful surprises, and everything you've been wishing for.",
+    "And selfishly...",
+    "I hope I get to be around for a few of those moments too.",
   ],
   signoff: "Yours,",
 }
 
-// Configurable gift link (fallback to environment variable or surprise destination)
-export const GIFT_URL =
-  import.meta.env.VITE_GIFT_URL || "https://open.spotify.com"
+/**
+ * ============================================================
+ * BLINKIT / EXTERNAL GIFT LINK CONFIGURATION
+ * ============================================================
+ * Replace "YOUR_BLINKIT_LINK_HERE" with your Blinkit gift link,
+ * custom order link, or surprise destination.
+ * You can also set VITE_GIFT_LINK in your .env file.
+ */
+export const GIFT_LINK =
+  import.meta.env.VITE_GIFT_LINK ||
+  import.meta.env.VITE_GIFT_URL ||
+  "https://open.spotify.com"
+
+// Backward-compatible alias
+export const GIFT_URL = GIFT_LINK

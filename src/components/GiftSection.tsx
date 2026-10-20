@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Gift, ExternalLink, Sparkles } from 'lucide-react'
-import { GIFT_URL } from '../config/birthday'
+import { GIFT_LINK } from '../config/birthday'
+import { trackGiftClick } from '../utils/analytics'
 
 type GiftClaimState = 'idle' | 'submitting' | 'revealed'
 
@@ -14,31 +15,14 @@ export const GiftSection: React.FC = () => {
 
     setClaimState('submitting')
 
-    // Generate or retrieve anonymous session id
-    let sessionId = 'anonymous'
+    // Discreetly track interaction via backend analytics (no UI exposure)
     try {
-      sessionId = localStorage.getItem('bday_session_id') || Math.random().toString(36).substring(2, 12)
-      localStorage.setItem('bday_session_id', sessionId)
-    } catch {
-      // localStorage may fail in private browsing
+      await trackGiftClick()
+    } catch (e) {
+      console.warn('Click tracking error:', e)
     }
 
-    try {
-      // Send event to backend endpoint
-      await fetch('/api/events', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          event: 'birthday_gift_claim_clicked',
-          sessionId,
-        }),
-      })
-    } catch (err) {
-      console.warn('Backend event notification error:', err)
-      // We gracefully continue so the user still gets their surprise!
-    }
-
-    // Small delightful transition
+    // Playful, cute transition reveal
     setTimeout(() => {
       setClaimState('revealed')
       setTimeout(() => {
@@ -50,21 +34,27 @@ export const GiftSection: React.FC = () => {
   return (
     <section 
       id="gift" 
-      className="w-full bg-[#f6eee7] text-[#2c2423] py-24 sm:py-36 px-5 sm:px-8 border-t border-[#ede0d6] relative"
+      className="w-full bg-[#f6eee7] text-[#2c2423] py-28 sm:py-44 px-5 sm:px-8 border-t border-[#ede0d6] relative"
     >
-      <div className="max-w-md mx-auto text-center">
-        {/* Soft Decorative Box Container */}
-        <div className="bg-[#fff9f6] rounded-3xl p-8 sm:p-10 shadow-[0_15px_45px_rgba(50,30,20,0.06)] border border-[#ede1d7]">
+      <div className="max-w-2xl mx-auto text-center">
+        {/* Soft Decorative Box Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.8 }}
+          className="bg-[#fff9f6] rounded-[36px] sm:rounded-[44px] p-10 sm:p-16 md:p-20 shadow-[0_20px_70px_rgba(50,30,20,0.07)] border border-[#ede1d7] relative"
+        >
           {/* Section Icon Badge */}
-          <div className="w-12 h-12 mx-auto rounded-full bg-[#fde9eb] flex items-center justify-center text-[#9e3a47] mb-5 shadow-sm">
-            <Gift className="w-6 h-6 stroke-[1.8]" />
+          <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-full bg-[#fde9eb] flex items-center justify-center text-[#9e3a47] mb-6 sm:mb-8 shadow-sm">
+            <Gift className="w-7 h-7 sm:w-8 sm:h-8 stroke-[1.8]" />
           </div>
 
-          <h2 className="text-2xl sm:text-3xl font-serif text-[#2e2321] font-normal mb-3">
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-serif text-[#2e2321] font-normal mb-4 sm:mb-6 leading-tight">
             One last thing...
           </h2>
 
-          <p className="text-sm sm:text-base text-[#6f5e5a] font-light mb-8 leading-relaxed">
+          <p className="text-base sm:text-2xl text-[#6b5854] font-light mb-10 sm:mb-14 leading-relaxed max-w-lg mx-auto">
             I may have planned a little something for you.
           </p>
 
@@ -72,16 +62,17 @@ export const GiftSection: React.FC = () => {
             {claimState === 'idle' && (
               <motion.div
                 key="claim-button"
-                initial={{ opacity: 0, scale: 0.96 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.96 }}
+                exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.3 }}
               >
+                {/* CLAIM YOUR GIFT 🎁 Button */}
                 <button
                   onClick={handleClaimClick}
-                  className="w-full sm:w-auto px-8 py-3.5 rounded-full text-xs sm:text-sm font-semibold tracking-[0.15em] uppercase text-white bg-[#9e3a47] hover:bg-[#852f3b] transition-all duration-300 shadow-md hover:shadow-lg active:scale-95 cursor-pointer inline-flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto px-10 sm:px-14 py-4 sm:py-5 rounded-full text-xs sm:text-base font-semibold tracking-[0.22em] uppercase text-white bg-[#9e3a47] hover:bg-[#852f3b] shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer inline-flex items-center justify-center gap-3 group"
                 >
-                  <span>🎁 Claim your Gift</span>
+                  <span className="group-hover:translate-x-0.5 transition-transform">CLAIM YOUR GIFT 🎁</span>
                 </button>
               </motion.div>
             )}
@@ -92,9 +83,9 @@ export const GiftSection: React.FC = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="py-3 text-sm text-[#9e3a47] font-medium flex items-center justify-center gap-2"
+                className="py-4 text-base sm:text-lg text-[#9e3a47] font-medium flex items-center justify-center gap-3"
               >
-                <Sparkles className="w-4 h-4 animate-spin text-[#9e3a47]" />
+                <Sparkles className="w-5 h-5 animate-spin text-[#9e3a47]" />
                 <span>Preparing your gift...</span>
               </motion.div>
             )}
@@ -102,41 +93,42 @@ export const GiftSection: React.FC = () => {
             {claimState === 'revealed' && (
               <motion.div
                 key="revealed"
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="space-y-5"
+                transition={{ duration: 0.6 }}
+                className="space-y-6 pt-2"
               >
-                {/* Transition message */}
-                <p className="text-base sm:text-lg font-serif text-[#3e2f2c] italic">
+                {/* Cute Reveal Note */}
+                <p className="text-xl sm:text-3xl font-serif text-[#3e2f2c] italic leading-snug">
                   Okay... this one's actually for you. ❤️
                 </p>
 
-                {/* Surprise Button */}
+                {/* Surprise Button opening GIFT_LINK */}
                 {showSurpriseLink && (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.4 }}
+                    transition={{ duration: 0.5 }}
+                    className="pt-2"
                   >
                     <a
-                      href={GIFT_URL}
+                      href={GIFT_LINK}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full sm:w-auto px-8 py-3.5 rounded-full text-xs sm:text-sm font-semibold tracking-[0.15em] uppercase text-white bg-[#9e3a47] hover:bg-[#852f3b] transition-all duration-300 shadow-md hover:shadow-lg active:scale-95 inline-flex items-center justify-center gap-2 group"
+                      className="w-full sm:w-auto px-10 sm:px-14 py-4 sm:py-5 rounded-full text-xs sm:text-base font-semibold tracking-[0.2em] uppercase text-white bg-[#9e3a47] hover:bg-[#852f3b] shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 inline-flex items-center justify-center gap-3 group"
                     >
                       <span>Open your surprise</span>
-                      <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                      <ExternalLink className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                     </a>
                   </motion.div>
                 )}
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
+        </motion.div>
 
-        {/* Quiet Footer */}
-        <div className="mt-16 text-center text-xs text-[#9c8985] font-light">
+        {/* Quiet Romantic Footer */}
+        <div className="mt-20 text-center text-sm text-[#9c8985] font-light">
           <p>Handmade with ♡ just for your birthday</p>
         </div>
       </div>
