@@ -39,7 +39,7 @@ export const MakeAWish: React.FC = () => {
       triggerSparkles()
 
       // Progressive reveal sequence
-      setTimeout(() => setStep(1), 600)   // "Okay... wish made?"
+      setTimeout(() => setStep(1), 600)   // "Okay... wish made babe?"
       setTimeout(() => setStep(2), 1800)  // "Wait."
       setTimeout(() => setStep(3), 3000)  // "I think I know what you wished for."
       setTimeout(() => setStep(4), 4400)  // "Something tells me you wished for me. :)"
@@ -53,12 +53,12 @@ export const MakeAWish: React.FC = () => {
   const isGlowingBoost = wishState === 'glowing'
 
   return (
-    <section 
-      id="make-a-wish" 
+    <section
+      id="make-a-wish"
       className="w-full bg-[#fbf6f2] text-[#2c2423] py-24 sm:py-36 px-5 sm:px-8 relative overflow-hidden"
     >
       {/* Decorative ambient background accents */}
-      <div 
+      <div
         className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-rose-200/20 rounded-full blur-3xl pointer-events-none"
         aria-hidden="true"
       />
@@ -99,10 +99,9 @@ export const MakeAWish: React.FC = () => {
           {/* Birthday Cake with Candles */}
           <div className="relative w-64 h-60 sm:w-72 sm:h-68 mx-auto flex items-center justify-center mb-8">
             {isFlamesLit && (
-              <div 
-                className={`absolute top-10 w-44 h-44 rounded-full bg-amber-300/25 blur-2xl transition-all duration-700 pointer-events-none ${
-                  isGlowingBoost ? 'scale-135 bg-amber-400/40' : 'scale-100'
-                }`}
+              <div
+                className={`absolute top-10 w-44 h-44 rounded-full bg-amber-300/25 blur-2xl transition-all duration-700 pointer-events-none ${isGlowingBoost ? 'scale-135 bg-amber-400/40' : 'scale-100'
+                  }`}
                 aria-hidden="true"
               />
             )}
@@ -122,9 +121,8 @@ export const MakeAWish: React.FC = () => {
                             animate={{ scale: isGlowingBoost ? 1.35 : 1, opacity: 1 }}
                             exit={{ scale: 0, opacity: 0 }}
                             transition={{ duration: 0.3 }}
-                            className={`w-3.5 h-6 rounded-full bg-gradient-to-t from-[#ff8c42] via-[#ffd166] to-[#ffffff] ${
-                              isGlowingBoost ? 'animate-flame-boost' : 'animate-flame'
-                            }`}
+                            className={`w-3.5 h-6 rounded-full bg-gradient-to-t from-[#ff8c42] via-[#ffd166] to-[#ffffff] ${isGlowingBoost ? 'animate-flame-boost' : 'animate-flame'
+                              }`}
                             style={{
                               boxShadow: isGlowingBoost
                                 ? '0 0 18px rgba(255, 170, 50, 0.95), 0 0 32px rgba(255, 100, 20, 0.7)'
@@ -210,7 +208,7 @@ export const MakeAWish: React.FC = () => {
                   transition={{ duration: 0.6 }}
                   className="text-xl sm:text-2xl font-serif text-[#3e2e2c]"
                 >
-                  Okay... wish made?
+                  Okay... wish maded babe?
                 </motion.p>
               )}
 
@@ -246,7 +244,7 @@ export const MakeAWish: React.FC = () => {
                   transition={{ duration: 0.7 }}
                   className="text-xl sm:text-3xl font-serif italic text-[#9e3a47] font-normal leading-snug"
                 >
-                  "Something tells me you wished for me. :)"
+                  "Something tells me you wished for :)"
                 </motion.p>
               )}
 

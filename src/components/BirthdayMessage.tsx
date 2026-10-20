@@ -4,12 +4,12 @@ import { BIRTHDAY_MESSAGE, HER_NAME } from '../config/birthday'
 
 export const BirthdayMessage: React.FC = () => {
   return (
-    <section 
-      id="birthday-message" 
+    <section
+      id="birthday-message"
       className="w-full bg-[#faf4f0] text-[#2c2423] py-28 sm:py-44 px-5 sm:px-8 md:px-12 lg:px-16 relative overflow-hidden"
     >
       {/* Soft romantic ambient background warmth */}
-      <div 
+      <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-rose-200/20 rounded-full blur-3xl pointer-events-none"
         aria-hidden="true"
       />
@@ -24,7 +24,7 @@ export const BirthdayMessage: React.FC = () => {
           className="inline-block mb-6 sm:mb-8"
         >
           <span className="text-xs sm:text-sm tracking-[0.28em] uppercase font-semibold text-[#a84453] bg-[#f8e4de] px-5 py-2 rounded-full">
-            Just For You
+            Just For You My Love
           </span>
         </motion.div>
 

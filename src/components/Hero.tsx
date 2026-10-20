@@ -24,13 +24,13 @@ export const Hero: React.FC = () => {
       />
 
       {/* Multi-stop cinematic soft gradient overlay */}
-      <div 
+      <div
         className="absolute inset-0 bg-gradient-to-t from-[#140e0f]/95 via-[#140e0f]/45 to-black/30 pointer-events-none"
         aria-hidden="true"
       />
 
       {/* Subtle Warm Vignette */}
-      <div 
+      <div
         className="absolute inset-0 bg-radial-[circle_at_center,_transparent_40%,_rgba(0,0,0,0.55)_100%] pointer-events-none"
         aria-hidden="true"
       />
@@ -44,7 +44,7 @@ export const Hero: React.FC = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-xs sm:text-base uppercase tracking-[0.3em] text-[#f5dfd5] font-medium mb-3 sm:mb-4 drop-shadow-sm"
         >
-          Hey, {HER_NAME}
+          Hey, My Love
         </motion.p>
 
         {/* Main Birthday Heading - 25-40% larger, cinematic centerpiece */}
@@ -69,7 +69,7 @@ export const Hero: React.FC = () => {
           transition={{ duration: 0.8, delay: 0.65 }}
           className="text-base sm:text-xl md:text-2xl text-[#ede0d8] font-light max-w-xl mx-auto mb-10 sm:mb-14 drop-shadow-sm leading-relaxed"
         >
-          I made a little something for you.
+          Made something special for you with love.
         </motion.p>
 
         {/* Subtle Scroll Indicator */}
