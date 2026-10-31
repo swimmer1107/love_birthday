@@ -15,9 +15,7 @@ dist-ssr
 .env*.local
 
 # Large video files (host on external storage instead)
-*.mp4
-*.mov
-*.webm
+# *.mp4 - videos are now compressed and tracked in git
 
 # Editor directories and files
 .vscode/*
