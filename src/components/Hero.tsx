@@ -1,9 +1,21 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
 import { HER_NAME, HERO_VIDEO } from '../config/birthday'
 
 export const Hero: React.FC = () => {
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.defaultMuted = true
+      videoRef.current.muted = true
+      videoRef.current.play().catch(() => {
+        // Autoplay handled silently
+      })
+    }
+  }, [])
+
   const scrollToNext = () => {
     const el = document.getElementById('personal-message')
     if (el) {
@@ -15,13 +27,17 @@ export const Hero: React.FC = () => {
     <section className="relative h-screen min-h-[640px] w-full overflow-hidden flex flex-col justify-end bg-black">
       {/* Background Video */}
       <video
+        ref={videoRef}
         className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
         autoPlay
         muted
         loop
         playsInline
+        preload="auto"
         src={HERO_VIDEO}
-      />
+      >
+        <source src={HERO_VIDEO} type="video/mp4" />
+      </video>
 
       {/* Multi-stop cinematic soft gradient overlay */}
       <div

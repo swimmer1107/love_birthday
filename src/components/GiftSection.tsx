@@ -1,14 +1,31 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Gift, ExternalLink, Sparkles } from 'lucide-react'
-import { GIFT_LINK } from '../config/birthday'
+import { useNavigate } from 'react-router-dom'
+import { Gift, Sparkles } from 'lucide-react'
+import confetti from 'canvas-confetti'
 import { trackGiftClick } from '../utils/analytics'
 
-type GiftClaimState = 'idle' | 'submitting' | 'revealed'
+type GiftClaimState = 'idle' | 'submitting'
 
 export const GiftSection: React.FC = () => {
+  const navigate = useNavigate()
   const [claimState, setClaimState] = useState<GiftClaimState>('idle')
-  const [showSurpriseLink, setShowSurpriseLink] = useState(false)
+
+  const triggerConfetti = () => {
+    try {
+      confetti({
+        particleCount: 70,
+        spread: 80,
+        origin: { y: 0.65 },
+        colors: ['#f43f5e', '#ec4899', '#d946ef', '#a855f7', '#fbbf24', '#ffffff'],
+        ticks: 240,
+        gravity: 0.85,
+        scalar: 1,
+      })
+    } catch (e) {
+      console.warn('Confetti effect skipped:', e)
+    }
+  }
 
   const handleClaimClick = async () => {
     if (claimState !== 'idle') return
@@ -22,12 +39,10 @@ export const GiftSection: React.FC = () => {
       console.warn('Click tracking error:', e)
     }
 
-    // Playful, cute transition reveal
+    // Brief confetti burst, then navigate to the surprise page
+    triggerConfetti()
     setTimeout(() => {
-      setClaimState('revealed')
-      setTimeout(() => {
-        setShowSurpriseLink(true)
-      }, 700)
+      navigate('/surprise')
     }, 600)
   }
 
@@ -43,7 +58,7 @@ export const GiftSection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.8 }}
-          className="bg-[#fff9f6] rounded-[36px] sm:rounded-[44px] p-10 sm:p-16 md:p-20 shadow-[0_20px_70px_rgba(50,30,20,0.07)] border border-[#ede1d7] relative"
+          className="bg-[#fff9f6] rounded-[36px] sm:rounded-[44px] p-8 sm:p-14 md:p-18 shadow-[0_20px_70px_rgba(50,30,20,0.07)] border border-[#ede1d7] relative"
         >
           {/* Section Icon Badge */}
           <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-full bg-[#fde9eb] flex items-center justify-center text-[#9e3a47] mb-6 sm:mb-8 shadow-sm">
@@ -89,41 +104,6 @@ export const GiftSection: React.FC = () => {
                 <span>Preparing your gift...</span>
               </motion.div>
             )}
-
-            {claimState === 'revealed' && (
-              <motion.div
-                key="revealed"
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="space-y-6 pt-2"
-              >
-                {/* Cute Reveal Note */}
-                <p className="text-xl sm:text-3xl font-serif text-[#3e2f2c] italic leading-snug">
-                  Okay... this one's actually for you. ❤️
-                </p>
-
-                {/* Surprise Button opening GIFT_LINK */}
-                {showSurpriseLink && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="pt-2"
-                  >
-                    <a
-                      href={GIFT_LINK}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full sm:w-auto px-10 sm:px-14 py-4 sm:py-5 rounded-full text-xs sm:text-base font-semibold tracking-[0.2em] uppercase text-white bg-[#9e3a47] hover:bg-[#852f3b] shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 inline-flex items-center justify-center gap-3 group"
-                    >
-                      <span>Open your surprise</span>
-                      <ExternalLink className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                    </a>
-                  </motion.div>
-                )}
-              </motion.div>
-            )}
           </AnimatePresence>
         </motion.div>
 
@@ -135,3 +115,4 @@ export const GiftSection: React.FC = () => {
     </section>
   )
 }
+

@@ -60,7 +60,7 @@ export const MemorySection: React.FC = () => {
                 <img
                   src={mem.photo}
                   alt={mem.alt || `Memory with ${HER_NAME}`}
-                  className="w-full max-h-[640px] sm:max-h-[720px] object-cover object-center transition-transform duration-1000 ease-out hover:scale-[1.025]"
+                  className="w-full max-h-[640px] sm:max-h-[720px] object-contain object-center transition-transform duration-1000 ease-out hover:scale-[1.025]"
                   loading="lazy"
                 />
               </div>
